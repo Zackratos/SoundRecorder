@@ -1,0 +1,80 @@
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background"
+    tools:context="com.danielkim.soundrecorder.StartFragment">
+
+    <Chronometer
+        android:id="@+id/start_chronometer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="183px"
+        android:textColor="@android:color/white"
+        android:textSize="114px" />
+
+
+    <ImageView
+        android:id="@+id/start_record_image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="408px"
+        android:src="@drawable/recorder_image"/>
+
+    <ImageView
+        android:id="@+id/start_wheel_left"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="400px"
+        android:layout_marginLeft="66px"
+        android:src="@drawable/wheel_image_left"/>
+
+    <ImageView
+        android:id="@+id/start_wheel_right"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="400px"
+        android:layout_marginRight="66px"
+        android:src="@drawable/wheel_image_right"/>
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="240px">
+
+        <ImageView
+            android:id="@+id/start_start_record"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:background="?android:attr/selectableItemBackground"
+            android:src="@drawable/start_icon"/>
+
+        <ImageView
+            android:id="@+id/start_delete_record"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@id/start_start_record"
+            android:layout_marginRight="90px"
+            android:layout_centerVertical="true"
+            android:src="@drawable/delete_icon_off"/>
+
+        <ImageView
+            android:id="@+id/start_stop_record"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/start_start_record"
+            android:layout_marginLeft="90px"
+            android:layout_centerVertical="true"
+            android:background="?android:attr/selectableItemBackground"
+            android:src="@drawable/list_icon"/>
+
+    </RelativeLayout>
+
+</RelativeLayout>

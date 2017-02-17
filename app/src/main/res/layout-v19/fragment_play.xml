@@ -1,0 +1,89 @@
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background"
+    tools:context="com.danielkim.soundrecorder.PlayFragment">
+
+    <FrameLayout
+        android:layout_marginTop="450px"
+        android:id="@+id/play_ad_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    </FrameLayout>
+
+
+    <RelativeLayout
+        android:id="@+id/play_button_whole"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="336px">
+
+        <ImageView
+            android:id="@+id/play_play"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/play_icon"
+            android:layout_centerHorizontal="true"
+            android:background="?android:attr/selectableItemBackground"/>
+
+        <ImageView
+            android:id="@+id/play_delete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/delete_icon_on"
+            android:layout_toLeftOf="@id/play_play"
+            android:layout_marginRight="90px"
+            android:layout_centerVertical="true"
+            android:background="?android:attr/selectableItemBackground"/>
+
+        <ImageView
+            android:id="@+id/play_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/back_icon"
+            android:layout_toRightOf="@id/play_play"
+            android:layout_marginLeft="90px"
+            android:layout_centerVertical="true"
+            android:background="?android:attr/selectableItemBackground"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="144px"
+        android:layout_above="@id/play_button_whole">
+
+        <SeekBar
+            android:id="@+id/play_seekBar"
+            android:layout_width="540px"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:thumb="@drawable/play_thumb_icon"/>
+
+        <TextView
+            android:id="@+id/play_current"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@id/play_seekBar"
+            android:textSize="30px"
+            android:layout_centerVertical="true"
+            android:textColor="#C3C2C4"
+            android:text="00:00"/>
+
+        <TextView
+            android:id="@+id/play_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/play_seekBar"
+            android:textSize="30px"
+            android:textColor="#C3C2C4"
+            android:layout_centerVertical="true"
+            android:text="00:00"/>
+    </RelativeLayout>
+
+</RelativeLayout>

@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/shape_ad">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="135dp"
+        android:layout_gravity="center_horizontal"
+        android:scaleType="centerCrop"
+        android:tag="ad_image"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:layout_marginTop="126dp"
+        android:background="#32000000"
+        android:fontFamily="sans-serif-light"
+        android:gravity="center"
+        android:text="AD"
+        android:textColor="@android:color/white"
+        android:textSize="8sp"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="100dp"
+        android:layout_marginLeft="4dp"
+        android:layout_marginTop="140dp"
+        android:ellipsize="end"
+        android:fontFamily="sans-serif-regular"
+        android:maxLength="45"
+        android:singleLine="true"
+        android:tag="ad_title"
+        android:textColor="#de000000"
+        android:textSize="14sp"
+        tools:text="Your see"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="100dp"
+        android:layout_marginLeft="4dp"
+        android:layout_marginTop="158dp"
+        android:ellipsize="end"
+        android:fontFamily="sans-serif-light"
+        android:singleLine="true"
+        android:tag="ad_subtitle"
+        android:textColor="#8a000000"
+        android:textSize="10sp"
+        tools:text="Your see Your see Your see Your see"/>
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:layout_marginRight="4dp"
+        android:layout_marginTop="142dp"
+        android:background="@drawable/native_ad_go"
+        android:tag="ad_action"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:background="@drawable/select_text_ad"
+        android:layout_marginTop="142dp"
+        android:layout_marginRight="4dp"
+        android:textSize="16sp"
+        android:text="Install"
+        android:textColor="#fff"
+        android:tag="ac_action_green"
+        />
+</FrameLayout>

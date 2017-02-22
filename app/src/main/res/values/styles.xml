@@ -7,4 +7,9 @@
 
     </style>
 
+    <style name="RenameDialogStyle" parent="AlertDialog.AppCompat.Light">
+        <item name="android:windowIsTranslucent">true</item><!-- 半透明 -->
+        <item name="android:background">@color/rename_dialog_background</item>
+    </style>
+
 </resources>

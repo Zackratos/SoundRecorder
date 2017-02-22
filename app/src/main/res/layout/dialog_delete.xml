@@ -1,16 +1,81 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
+
+<!--<FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">-->
+
+
+
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_gravity="center_horizontal"
-    android:background="@drawable/delete_background">
+    android:orientation="vertical"
+    android:layout_gravity="center_horizontal">
 
-    <ImageView
-        android:layout_width="196px"
-        android:layout_height="196px"
-        android:src="@mipmap/ic_launcher"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="81px"/>
 
-</FrameLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@drawable/delete_background">
+
+        <ImageView
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="81px"
+            android:src="@drawable/delete_dialog_icon" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="20px"
+            android:text="Voice Record"
+            android:textColor="#605869"
+            android:textSize="45px"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="165px"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/delete_okay"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:background="?android:attr/selectableItemBackground"
+            android:text="Okay"
+            android:textColor="#dd000000"
+            android:textSize="60px"/>
+
+        <View
+            android:layout_width="3px"
+            android:layout_height="60px"
+            android:layout_gravity="center_vertical"
+            android:background="#33000000"/>
+
+        <TextView
+            android:id="@+id/delete_cancel"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:background="?android:attr/selectableItemBackground"
+            android:text="Cancel"
+            android:textColor="#dd000000"
+            android:textSize="60px"/>
+
+    </LinearLayout>
+
+
+</LinearLayout>
+
+<!--</FrameLayout>-->

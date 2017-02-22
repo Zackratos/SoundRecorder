@@ -1,15 +1,13 @@
 package com.danielkim.soundrecorder;
 
 import android.app.Dialog;
-import android.content.DialogInterface;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
-
-import java.io.File;
+import android.view.View;
+import android.widget.TextView;
 
 
 /**
@@ -33,27 +31,28 @@ public class DeleteDialog extends DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setView(LayoutInflater.from(getActivity()).inflate(R.layout.dialog_delete, null));
-        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+        View view = LayoutInflater.from(getActivity()).inflate(R.layout.dialog_delete, null);
+        TextView okayView = (TextView) view.findViewById(R.id.delete_okay);
+        TextView cancelView = (TextView) view.findViewById(R.id.delete_cancel);
+        okayView.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                dismiss();
-            }
-        });
-        builder.setPositiveButton("Okay", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-//                String name = getArguments().getString("name");
-//                new File(getActivity().getExternalCacheDir().getAbsolutePath() + "/VoiceRecorder/" + name).delete();
+            public void onClick(View view) {
                 if (listener != null) {
                     listener.onClick();
                 }
             }
         });
+        cancelView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dismiss();
+            }
+        });
+        builder.setView(view);
+
         AlertDialog dialog = builder.create();
-//        dialog.getButton(dialog.BUTTON_POSITIVE).setTextColor(Color.BLACK);
-//        dialog.getButton(dialog.BUTTON_NEGATIVE).setTextColor(Color.BLACK);
         dialog.setCanceledOnTouchOutside(false);
+//        dialog.setCancelable(false);
 
         return dialog;
     }

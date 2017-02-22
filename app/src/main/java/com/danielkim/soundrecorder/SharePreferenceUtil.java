@@ -25,11 +25,11 @@ public class SharePreferenceUtil {
         getEditor(context).putInt("bootCount", bootCount).apply();
     }
 
-    public static int getCurrent(Context context) {
-        return getSharePreferences(context).getInt("current", 1);
+/*    public static int getCurrent(Context context) {
+        return getSharePreferences(context).getInt("current", 0);
     }
 
     public static void putCurrent(Context context, int current) {
         getEditor(context).putInt("current", current).apply();
-    }
+    }*/
 }

@@ -11,13 +11,13 @@ android {
         }
     }
 
-    compileSdkVersion 25
-    buildToolsVersion "25.0.2"
+    compileSdkVersion 23
+    buildToolsVersion "23.0.3"
 
     defaultConfig {
         applicationId "com.danielkim.soundrecorder"
         minSdkVersion 14
-        targetSdkVersion 25
+        targetSdkVersion 23
         versionCode 1
         versionName "1.0"
     }
@@ -34,15 +34,14 @@ android {
 }
 
 dependencies {
-    //    compile 'com.android.support:support-v4:25.1.1'
-    //    compile 'org.litepal.android:core:1.4.1'
-    compile 'com.android.support:appcompat-v7:25.1.1'
+
+    compile 'com.android.support:appcompat-v7:23.0.1'
 //    compile 'com.android.support:cardview-v7:25.1.1'
-    compile 'com.android.support:recyclerview-v7:25.1.1'
-    compile 'com.melnykov:floatingactionbutton:1.1.0'
-    compile 'com.jpardogo.materialtabstrip:library:1.0.6'
+    compile 'com.android.support:recyclerview-v7:23.0.1'
+//    compile 'com.melnykov:floatingactionbutton:1.1.0'
+//    compile 'com.jpardogo.materialtabstrip:library:1.0.6'
     compile 'com.zhy:autolayout:1.4.5'
-    compile 'com.android.support:support-v4:25.1.1'
+    compile 'com.android.support:support-v4:23.0.1'
     compile 'com.github.mcxtzhang:SwipeDelMenuLayout:V1.2.5'
 
     compile 'com.core:empty:1.1.6'

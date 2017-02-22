@@ -52,6 +52,14 @@
     </LinearLayout>
 
     <Button
+        android:id="@+id/list_rename"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:background="@android:color/holo_orange_light"
+        android:text="rename"
+        android:textColor="@android:color/white"/>
+
+    <Button
         android:id="@+id/list_delete"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"

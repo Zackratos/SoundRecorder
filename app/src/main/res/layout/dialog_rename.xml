@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+
+
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="420px"
+    >
+
+    <EditText
+        android:id="@+id/rename_name"
+        android:layout_width="750px"
+        android:layout_height="84px"
+        android:paddingLeft="10px"
+        android:background="@drawable/rename_dialog_edittext_background"
+        android:layout_centerInParent="true"
+        android:textSize="54px"
+        android:textColor="#605b64"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_above="@id/rename_name"
+        android:layout_marginBottom="35px"
+        android:text="Name this Record"
+        android:textSize="60px"
+        android:textColor="#453f4b"/>
+
+
+
+
+    <LinearLayout
+        android:id="@+id/rename_button_whole"
+        android:layout_width="match_parent"
+        android:layout_height="132px"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/rename_cancel"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:background="?android:attr/selectableItemBackground"
+            android:textSize="60px"
+            android:textColor="#6b9cf4"
+            android:text="Cancel"/>
+
+        <View
+            android:layout_width="3px"
+            android:layout_height="60px"
+            android:layout_gravity="center_vertical"
+            android:background="#33000000"/>
+
+        <TextView
+            android:id="@+id/rename_okay"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:background="?android:attr/selectableItemBackground"
+            android:textSize="60px"
+            android:textColor="#6b9cf4"
+            android:text="Okay"/>
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_above="@id/rename_button_whole"
+        android:background="#7e7a83"/>
+</RelativeLayout>
+
+</FrameLayout>

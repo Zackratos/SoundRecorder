@@ -1,12 +1,13 @@
 package com.danielkim.soundrecorder;
 
 import android.app.Activity;
-import android.graphics.Color;
+import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,7 +46,7 @@ public class PlayFragment extends Fragment implements View.OnClickListener {
     private Runnable runnable;
 
 
-    private static final String TAG_AD = "recorder";
+    private static final String TAG_AD = "play";
 
     public PlayFragment() {
         // Required empty public constructor
@@ -63,8 +64,10 @@ public class PlayFragment extends Fragment implements View.OnClickListener {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         AndroidSdk.onCreate(getActivity(), new AndroidSdk.Builder());
+        AndroidSdk.track("播放界面", "进入次数", "", 1);
         String name = getArguments().getString("name");
-        file = new File(getActivity().getExternalCacheDir().getAbsolutePath() + "/VoiceRecorder/" + name);
+//        file = new File(getActivity().getExternalCacheDir().getAbsolutePath() + "/VoiceRecorder/" + name);
+        file = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/VoiceRecorder/" + name);
         mp = new MediaPlayer();
         mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
             @Override
@@ -84,9 +87,11 @@ public class PlayFragment extends Fragment implements View.OnClickListener {
         runnable = new Runnable() {
             @Override
             public void run() {
-                currentView.setText(switchTime(mp.getCurrentPosition()));
-                seekBar.setProgress(mp.getCurrentPosition() / 1000);
-                handler.postDelayed(this, 500);
+                Log.d("TAG", "current = " + mp.getCurrentPosition());
+                int currentSecond = Math.round(mp.getCurrentPosition() / 1000f);
+                currentView.setText(switchTime(currentSecond));
+                seekBar.setProgress(currentSecond);
+                handler.postDelayed(this, 100);
             }
         };
     }
@@ -97,6 +102,9 @@ public class PlayFragment extends Fragment implements View.OnClickListener {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_play, container, false);
         initView(view);
+        mp.start();
+        handler.post(runnable);
+        initPlayView();
         return view;
     }
 
@@ -115,8 +123,9 @@ public class PlayFragment extends Fragment implements View.OnClickListener {
         currentView = (TextView) view.findViewById(R.id.play_current);
         timeView = (TextView) view.findViewById(R.id.play_time);
 
-        seekBar.setMax(Math.round(mp.getDuration() / 1000));
-        timeView.setText(switchTime(mp.getDuration()));
+        int totalSecond = Math.round(mp.getDuration() / 1000f);
+        seekBar.setMax(totalSecond);
+        timeView.setText(switchTime(totalSecond));
         playView.setOnClickListener(this);
         deleteView.setOnClickListener(this);
         backView.setOnClickListener(this);
@@ -135,7 +144,7 @@ public class PlayFragment extends Fragment implements View.OnClickListener {
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
                 mp.seekTo(seekBar.getProgress() * 1000);
-                currentView.setText(switchTime(seekBar.getProgress() * 1000));
+                currentView.setText(switchTime(seekBar.getProgress()));
             }
         });
 
@@ -154,7 +163,6 @@ public class PlayFragment extends Fragment implements View.OnClickListener {
                 adContainer.addView(adView);
             }
         }
-
     }
 
     @Override
@@ -167,8 +175,7 @@ public class PlayFragment extends Fragment implements View.OnClickListener {
                 } else {
                     mp.start();
                     handler.post(runnable);
-//                    chronometer.setBase(SystemClock.elapsedRealtime() - base);
-//                    chronometer.start();
+
                 }
                 initPlayView();
                 break;
@@ -179,11 +186,13 @@ public class PlayFragment extends Fragment implements View.OnClickListener {
                     deleteDialog.setOnPositiveClickListener(new DeleteDialog.OnPositiveClickListener() {
                         @Override
                         public void onClick() {
-                            file.delete();
-                            getActivity().setResult(Activity.RESULT_OK);
+                            Intent data = new Intent();
+                            data.putExtra("name", file.getName());
+                            getActivity().setResult(Activity.RESULT_OK, data);
                             getActivity().finish();
                         }
                     });
+                    deleteDialog.setCancelable(false);
                     deleteDialog.show(getFragmentManager(), "TAG");
                 }
                 break;
@@ -209,6 +218,7 @@ public class PlayFragment extends Fragment implements View.OnClickListener {
             mp.stop();
         }
         mp.release();
+        mp = null;
         handler.removeCallbacks(runnable);
     }
 
@@ -217,10 +227,14 @@ public class PlayFragment extends Fragment implements View.OnClickListener {
     }
 
 
-    private String switchTime(long duration) {
-        int totalSecond = Math.round(duration / 1000);
+    private String switchTime(int totalSecond) {
+//        float d = duration / 1000f;
+//        Log.d("TAG", "" + d);
+//        Log.d("TAG", "" + Math.round(d));
+//        int totalSecond = Math.round(duration / 1000f);
+        Log.d("TAG", "totalSecond = " + totalSecond);
         int second = totalSecond % 60;
-        int minute = second / 60;
+        int minute = totalSecond / 60;
         String secondString = second >= 10 ? second + "" : "0" + second;
         String minuteString = minute >= 10 ? minute + "" : "0" + minute;
         return minuteString + ":" + secondString;

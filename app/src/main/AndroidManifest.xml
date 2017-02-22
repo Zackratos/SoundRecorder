@@ -4,6 +4,7 @@
 
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
 
     <application
         android:name=".RecorderApplication"
@@ -11,8 +12,6 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme">
-
-
         <provider
             android:name="android.support.v4.content.FileProvider"
             android:authorities="com.danielkim.soundrecorder.fileprovider"
@@ -36,25 +35,20 @@
 
         <meta-data
             android:name="design_width"
-            android:value="1080">
-
-        </meta-data>
-
+            android:value="1080"></meta-data>
         <meta-data
             android:name="design_height"
-            android:value="1920">
-
-        </meta-data>
+            android:value="1920"></meta-data>
 
         <activity
             android:name=".RecordListActivity"
             android:label="RecordList"
             android:parentActivityName=".StartActivity"
-            android:screenOrientation="portrait">
-        </activity>
-        <activity android:name=".PlayActivity"
-            android:screenOrientation="portrait">
-        </activity>
+            android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".PlayActivity"
+            android:screenOrientation="portrait"></activity>
+
     </application>
 
 </manifest>

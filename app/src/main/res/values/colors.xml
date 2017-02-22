@@ -10,4 +10,6 @@
     <color name="text">#FFFFFF</color>
     <color name="white">#FFFFFF</color>
     <color name="tab_strip">#B42929</color>
+
+    <color name="rename_dialog_background">#ccffffff</color>
 </resources>

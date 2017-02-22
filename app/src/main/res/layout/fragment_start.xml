@@ -6,14 +6,15 @@
     android:background="@drawable/background"
     tools:context="com.danielkim.soundrecorder.StartFragment">
 
-    <Chronometer
+    <TextView
         android:id="@+id/start_chronometer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="183px"
         android:textColor="@android:color/white"
-        android:textSize="114px" />
+        android:textSize="114px"
+        android:text="00:00:00"/>
 
 
     <ImageView
@@ -63,6 +64,7 @@
             android:layout_toLeftOf="@id/start_start_record"
             android:layout_marginRight="90px"
             android:layout_centerVertical="true"
+            android:background="?android:attr/selectableItemBackground"
             android:src="@drawable/delete_icon_off"/>
 
         <ImageView

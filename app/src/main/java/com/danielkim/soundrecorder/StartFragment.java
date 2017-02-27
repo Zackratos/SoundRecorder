@@ -6,6 +6,7 @@ import android.animation.Animator;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
+import android.app.Activity;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -100,6 +101,7 @@ public class StartFragment extends Fragment implements View.OnClickListener {
         AndroidSdk.track("主界面", "启动次数", "", 1);
         update();
         bootCount = SharePreferenceUtil.getBootCount(getActivity());
+        Log.d("TAG", "bootCount = " + bootCount);
         if (bootCount == 1) {
             praise();
         }
@@ -116,6 +118,7 @@ public class StartFragment extends Fragment implements View.OnClickListener {
 //        current = SharePreferenceUtil.getCurrent(getActivity());
 
         popNotification();
+        SharePreferenceUtil.putBootCount(getActivity(), ++bootCount);
     }
 
     @Override
@@ -142,14 +145,22 @@ public class StartFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onDestroy() {
         super.onDestroy();
+        Log.d("TAG", "onDestroy");
         if (isRecording) {
             recorder.stop();
         }
         recorder.release();
         recorder = null;
 //        SharePreferenceUtil.putCurrent(getActivity(), current);
-        SharePreferenceUtil.putBootCount(getActivity(), ++bootCount);
+
     }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        Log.d("TAG", "onDetach");
+    }
+
 
     private void initView(View view) {
         startView = (ImageView) view.findViewById(R.id.start_start_record);
@@ -658,6 +669,7 @@ public class StartFragment extends Fragment implements View.OnClickListener {
                         Log.d("TAG", "1-1");
                     }
                 }
+
 
                 fileOutputStream.flush();
                 fileInputStream.close();

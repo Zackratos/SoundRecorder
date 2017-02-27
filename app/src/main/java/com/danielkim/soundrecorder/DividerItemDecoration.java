@@ -9,6 +9,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 
 /**
  * Created by IVY on 2017/2/22.
@@ -64,12 +65,13 @@ public class DividerItemDecoration extends RecyclerView.ItemDecoration {
 
     public void drawVertical(Canvas c, RecyclerView parent) {
         final int left = parent.getPaddingLeft();
+
         final int right = parent.getWidth() - parent.getPaddingRight();
 
         final int childCount = parent.getChildCount();
-        for (int i = 0; i < childCount; i++) {
+        for (int i = 1; i < childCount; i++) {
             final View child = parent.getChildAt(i);
-            android.support.v7.widget.RecyclerView v = new android.support.v7.widget.RecyclerView(parent.getContext());
+            RecyclerView v = new RecyclerView(parent.getContext());
             final RecyclerView.LayoutParams params = (RecyclerView.LayoutParams) child
                     .getLayoutParams();
             final int top = child.getBottom() + params.bottomMargin;

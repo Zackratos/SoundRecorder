@@ -28,6 +28,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -209,7 +210,7 @@ public class RecordListFragment extends Fragment {
 
         RecyclerView rv = (RecyclerView) view.findViewById(R.id.list_list);
         rv.setLayoutManager(new LinearLayoutManager(getActivity()));
-        rv.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL_LIST));
+//        rv.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL_LIST));
         rv.setAdapter(adapter);
     }
 
@@ -224,8 +225,11 @@ public class RecordListFragment extends Fragment {
 
         private void initView() {
             View adView = null;
+            Log.d("TAG", "initView");
             if (AndroidSdk.hasNativeAd(TAG_AD, AndroidSdk.NATIVE_AD_TYPE_ALL)) {
+                Log.d("TAG", "hasNativeAd");
                 if (adView == null) {
+                    Log.d("TAG", "adView == null");
                     adView = AndroidSdk.peekNativeAdViewWithLayout(TAG_AD, AndroidSdk.NATIVE_AD_TYPE_ALL, R.layout.native_ad, new ClientNativeAd.NativeAdClickListener() {
                         @Override
                         public void onNativeAdClicked(ClientNativeAd clientNativeAd) {
@@ -234,7 +238,10 @@ public class RecordListFragment extends Fragment {
                     });
                 }
                 if (adView != null) {
+                    Log.d("TAG", "adView != null");
                     adContainer.addView(adView);
+                } else {
+                    Log.d("TAG", "adView == null");
                 }
             }
         }
@@ -247,7 +254,7 @@ public class RecordListFragment extends Fragment {
         private TextView durationView;
         private Button deleteButton;
         private Button renameButton;
-        private LinearLayout contentView;
+        private RelativeLayout contentView;
 
         RecordViewHolder(View itemView) {
             super(itemView);
@@ -258,7 +265,7 @@ public class RecordListFragment extends Fragment {
             durationView = (TextView) itemView.findViewById(R.id.list_duration);
             renameButton = (Button) itemView.findViewById(R.id.list_rename);
             deleteButton = (Button) itemView.findViewById(R.id.list_delete);
-            contentView = (LinearLayout) itemView.findViewById(R.id.list_content);
+            contentView = (RelativeLayout) itemView.findViewById(R.id.list_content);
         }
 
         private void initView(final int position) {

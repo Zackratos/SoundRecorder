@@ -87,7 +87,6 @@ public class PlayFragment extends Fragment implements View.OnClickListener {
         runnable = new Runnable() {
             @Override
             public void run() {
-                Log.d("TAG", "current = " + mp.getCurrentPosition());
                 int currentSecond = Math.round(mp.getCurrentPosition() / 1000f);
                 currentView.setText(switchTime(currentSecond));
                 seekBar.setProgress(currentSecond);
@@ -150,8 +149,13 @@ public class PlayFragment extends Fragment implements View.OnClickListener {
 
         FrameLayout adContainer = (FrameLayout) view.findViewById(R.id.play_ad_container);
         View adView = null;
+//        adView = LayoutInflater.from(getActivity()).inflate(R.layout.native_ad, null);
+//        adContainer.addView(adView);
+        Log.d("TAG", "initView");
         if (AndroidSdk.hasNativeAd(TAG_AD, AndroidSdk.NATIVE_AD_TYPE_ALL)) {
+            Log.d("TAG", "AndroidSdk.hasNativeAd");
             if (adView == null) {
+                Log.d("TAG", "adView == null");
                 adView = AndroidSdk.peekNativeAdViewWithLayout(TAG_AD, AndroidSdk.NATIVE_AD_TYPE_ALL, R.layout.native_ad, new ClientNativeAd.NativeAdClickListener() {
                     @Override
                     public void onNativeAdClicked(ClientNativeAd clientNativeAd) {
@@ -160,7 +164,10 @@ public class PlayFragment extends Fragment implements View.OnClickListener {
                 });
             }
             if (adView != null) {
+                Log.d("TAG", "adView != null");
                 adContainer.addView(adView);
+            } else {
+                Log.d("TAG", "adView == null");
             }
         }
     }
@@ -232,7 +239,6 @@ public class PlayFragment extends Fragment implements View.OnClickListener {
 //        Log.d("TAG", "" + d);
 //        Log.d("TAG", "" + Math.round(d));
 //        int totalSecond = Math.round(duration / 1000f);
-        Log.d("TAG", "totalSecond = " + totalSecond);
         int second = totalSecond % 60;
         int minute = totalSecond / 60;
         String secondString = second >= 10 ? second + "" : "0" + second;

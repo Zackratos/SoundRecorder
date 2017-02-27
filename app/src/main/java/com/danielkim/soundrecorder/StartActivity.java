@@ -18,7 +18,18 @@ public class StartActivity extends SingleFragmentActivity {
     private long mExitTime;
 
 
-    //对返回键进行监听
+    @Override
+    public void onBackPressed() {
+        if ((System.currentTimeMillis() - mExitTime) > 2000) {
+            Toast.makeText(this, "Press again to exit", Toast.LENGTH_SHORT).show();
+            mExitTime = System.currentTimeMillis();
+        } else {
+            super.onBackPressed();
+//            System.exit(0);
+        }
+    }
+
+/*    //对返回键进行监听
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
 
@@ -39,5 +50,5 @@ public class StartActivity extends SingleFragmentActivity {
             finish();
             System.exit(0);
         }
-    }
+    }*/
 }

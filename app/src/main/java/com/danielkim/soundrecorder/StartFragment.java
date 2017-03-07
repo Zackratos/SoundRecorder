@@ -3,15 +3,16 @@ package com.danielkim.soundrecorder;
 
 import android.Manifest;
 import android.animation.Animator;
-import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
-import android.app.Activity;
+import android.annotation.TargetApi;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Typeface;
@@ -19,21 +20,17 @@ import android.media.MediaRecorder;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.IBinder;
 import android.os.SystemClock;
 import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.NotificationManagerCompat;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.NotificationCompat;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.LinearInterpolator;
-import android.widget.Chronometer;
 import android.widget.ImageView;
 import android.widget.RemoteViews;
 import android.widget.TextView;
@@ -47,7 +44,6 @@ import com.ivy.util.Utility;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.RandomAccessFile;
@@ -62,7 +58,7 @@ import java.util.List;
  * Use the {@link StartFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class StartFragment extends Fragment implements View.OnClickListener {
+public class StartFragment extends BaseFragment implements View.OnClickListener {
 
     private ImageView startView;
     private ImageView stopView;
@@ -84,6 +80,9 @@ public class StartFragment extends Fragment implements View.OnClickListener {
 
     private ObjectAnimator leftAnimator, rightAnimator;
 
+
+    private ServiceConnection connection;
+    private RecorderService.RecorderBinder recorderBinder;
 
 
 
@@ -107,18 +106,16 @@ public class StartFragment extends Fragment implements View.OnClickListener {
         }
         File rf = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/VoiceRecorder");
         File tf = new File(getActivity().getExternalCacheDir().getAbsolutePath() + "/temp");
-//        File recordFolder = new File(getActivity().getExternalCacheDir().getAbsolutePath() + "/VoiceRecorder");
-//        File tempFolder = new File(getActivity().getExternalCacheDir().getAbsolutePath() + "/temp");
         if (!rf.exists()) {
             rf.mkdir();
         }
         if (!tf.exists()) {
             tf.mkdir();
         }
-//        current = SharePreferenceUtil.getCurrent(getActivity());
 
         popNotification();
         SharePreferenceUtil.putBootCount(getActivity(), ++bootCount);
+//        initService();
     }
 
     @Override
@@ -151,15 +148,9 @@ public class StartFragment extends Fragment implements View.OnClickListener {
         }
         recorder.release();
         recorder = null;
-//        SharePreferenceUtil.putCurrent(getActivity(), current);
 
     }
 
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        Log.d("TAG", "onDetach");
-    }
 
 
     private void initView(View view) {
@@ -230,13 +221,30 @@ public class StartFragment extends Fragment implements View.OnClickListener {
 
     }
 
+    private void initService() {
+        connection = new ServiceConnection() {
+            @Override
+            public void onServiceConnected(ComponentName name, IBinder service) {
+                recorderBinder = (RecorderService.RecorderBinder) service;
+
+            }
+
+            @Override
+            public void onServiceDisconnected(ComponentName name) {
+
+            }
+        };
+
+        Intent intent = RecorderService.newIntent(getActivity());
+        getActivity().startService(intent);
+        getActivity().bindService(intent, connection, Context.BIND_AUTO_CREATE);
+    }
+
+
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.start_start_record:
-/*                if (!isRecording) {
-                    startRecord();
-                }*/
                 if (isRecording) {
                     pauseRecord();
                 } else if (isPausing) {
@@ -245,6 +253,7 @@ public class StartFragment extends Fragment implements View.OnClickListener {
                     startRecord();
                     AndroidSdk.track("录音按钮", "点击次数", "", 1);
                 }
+
                 initStartView();
                 initStopView();
                 initDeleteView();
@@ -261,12 +270,7 @@ public class StartFragment extends Fragment implements View.OnClickListener {
                 initDeleteView();
                 break;
             case R.id.start_delete_record:
-/*                File file = new File(getActivity().getExternalCacheDir().getAbsolutePath() + "/VoiceRecorder/" + "voice recorder " + current + ".amr");
-                if (file.exists()) {
-                    file.delete();
-                }*/
                 initRecorder();
-//                current--;
                 isDeleted = true;
 
                 initStartView();
@@ -276,6 +280,11 @@ public class StartFragment extends Fragment implements View.OnClickListener {
             default:
                 break;
         }
+    }
+
+    @Override
+    protected void grantedPermission() {
+
     }
 
     private void initStartView() {
@@ -293,13 +302,6 @@ public class StartFragment extends Fragment implements View.OnClickListener {
     }
 
     private void initDeleteView() {
-/*        if (isRecording || isDeleted) {
-            deleteView.setImageResource(R.drawable.delete_icon_off);
-            deleteView.setClickable(false);
-        } else {
-            deleteView.setImageResource(R.drawable.delete_icon_on);
-            deleteView.setClickable(true);
-        }*/
         if (isPausing && !isDeleted) {
             deleteView.setImageResource(R.drawable.delete_icon_on);
             deleteView.setClickable(true);
@@ -328,17 +330,12 @@ public class StartFragment extends Fragment implements View.OnClickListener {
         try {
             recorder.reset();
             recorder.setAudioSource(MediaRecorder.AudioSource.MIC);
-//            recorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4);
             recorder.setOutputFormat(MediaRecorder.OutputFormat.RAW_AMR);
             recorder.setOutputFile(getActivity().getExternalCacheDir().getAbsolutePath() + "/temp/" + "temp" + count + ".amr");
-//            recorder.setOutputFile(Environment.getExternalStorageDirectory().getAbsolutePath() + "/temp/" + "temp" + count + ".amr");
-//            recorder.setAudioEncoder(MediaRecorder.AudioEncoder.AAC);
             recorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
             recorder.setAudioChannels(1);
             recorder.prepare();
             recorder.start();
-//            chronometer.setBase(SystemClock.elapsedRealtime() - animationCurrent);
-//            chronometer.start();
             isRecording = true;
             isDeleted = false;
         } catch (IOException e) {
@@ -347,7 +344,6 @@ public class StartFragment extends Fragment implements View.OnClickListener {
     }
 
     private void startRecord() {
-//        current++;
         resetRecorderPermission();
         playAnimation();
         isRecording = true;
@@ -355,14 +351,11 @@ public class StartFragment extends Fragment implements View.OnClickListener {
 
 
     private void pauseRecord() {
-//        chronometer.stop();
         recorder.stop();
         pauseAnimation();
         isRecording = false;
         isPausing = true;
         tempFiles.add(new File(getActivity().getExternalCacheDir().getAbsolutePath() + "/temp/" + "temp" + count + ".amr"));
-//        tempFiles.add(new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/temp/" + "temp" + count + ".amr"));
-//        mergeAmrFiles();
     }
 
     private void reStartRecord() {
@@ -375,27 +368,7 @@ public class StartFragment extends Fragment implements View.OnClickListener {
     }
 
     private void stopRecord() {
-/*        if (isRecording) {
-            recorder.stop();
-        }
-        isRecording = false;
-        isPausing = false;
-        animationCurrent = 0;
-        animationCount = 0;
-        pauseAnimation();
-        stopAnimation();
         File file = new File(getActivity().getExternalCacheDir().getAbsolutePath() + "/temp/" + "temp" + count + ".amr");
-        if (!tempFiles.contains(file)) {
-            tempFiles.add(file);
-        }
-        getInputCollection();
-        count = 0;
-        for (File tempFile : tempFiles) {
-            tempFile.delete();
-        }
-        tempFiles.clear();*/
-        File file = new File(getActivity().getExternalCacheDir().getAbsolutePath() + "/temp/" + "temp" + count + ".amr");
-//        File file = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/temp/" + "temp" + count + ".amr");
         if (!tempFiles.contains(file)) {
             tempFiles.add(file);
         }
@@ -413,12 +386,9 @@ public class StartFragment extends Fragment implements View.OnClickListener {
 
             @Override
             public void onNegativeClick() {
-//                File file = new File(getActivity().getExternalCacheDir().getAbsolutePath() + "/VoiceRecorder/" + "voice recorder " + current + ".amr");
-//                File file = new File(getActivity().getExternalCacheDir().getAbsolutePath() + "/VoiceRecorder/" + name + ".amr");
                 File file = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/VoiceRecorder/" + name + ".amr");
                 if (file.exists()) {
                     file.delete();
-//                    current--;
                 }
             }
         });
@@ -436,7 +406,6 @@ public class StartFragment extends Fragment implements View.OnClickListener {
 
         animationCurrent = 0;
         animationCount = 0;
-//        pauseAnimation();
         stopAnimation();
         currentView.setText("00:00:00");
         count = 0;
@@ -540,7 +509,6 @@ public class StartFragment extends Fragment implements View.OnClickListener {
         return hourString + ":" + minuteString + ":" + secondString;
     }
 
-//    private String convert
 
     private long convertStrTimeToLong (String text) {
         String[] time = text.split(":");
@@ -581,31 +549,6 @@ public class StartFragment extends Fragment implements View.OnClickListener {
         }
     }
 
-
-/*    *//** 合并音频文件 *//*
-    public void mergeAmrFiles(){
-        // 创建音频文件,合并的文件放这里
-        File targetFile = new File(getActivity().getExternalCacheDir().getAbsolutePath() + "/VoiceRecorder/" + "voice recorder " + current + ".amr");
-        FileOutputStream fileOutputStream = null;
-
-        if(!targetFile.exists()){
-            try {
-                targetFile.createNewFile();
-            } catch (IOException e){
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-        }
-
-        try {
-            fileOutputStream = new FileOutputStream(targetFile);
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-
-
-    }*/
 
 
 

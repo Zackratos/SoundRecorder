@@ -4,7 +4,7 @@
 
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
         android:name=".RecorderApplication"
@@ -35,20 +35,24 @@
 
         <meta-data
             android:name="design_width"
-            android:value="1080"></meta-data>
+            android:value="1080" />
         <meta-data
             android:name="design_height"
-            android:value="1920"></meta-data>
+            android:value="1920" />
 
         <activity
             android:name=".RecordListActivity"
             android:label="RecordList"
             android:parentActivityName=".StartActivity"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".PlayActivity"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
 
+        <service
+            android:name=".RecorderService"
+            android:enabled="true"
+            android:exported="true"></service>
     </application>
 
 </manifest>
